@@ -4,17 +4,14 @@
 use bevy::prelude::*;
 
 mod common;
+mod splash;
 
 use common::{configuration::ConfigurationPlugin, debug::DebugPlugin};
-
-fn spawn_camera(mut commands: Commands){
-    commands.spawn(Camera3dBundle::default());
-}
+use splash::SplashPlugin;
 
 fn main() {
 	App::new()
-        .add_systems(Startup, spawn_camera)
-		.add_plugins(ConfigurationPlugin)
-		.add_plugins(DebugPlugin)
-        .run();
+		.add_plugins((ConfigurationPlugin, DebugPlugin))
+		.add_plugins(SplashPlugin)
+		.run();
 }

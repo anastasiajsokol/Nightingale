@@ -1,0 +1,6 @@
+# format opinions
+newline_style = "Unix"
+hard_tabs = true
+
+# prevent reformat
+reorder_imports = false

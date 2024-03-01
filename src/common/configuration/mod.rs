@@ -6,7 +6,7 @@ pub struct ConfigurationPlugin;
 
 impl Plugin for ConfigurationPlugin {
 	fn build(&self, app: &mut bevy::prelude::App) {
-		app.insert_resource(ClearColor(Color::hsl(267.0, 1.0, 0.05)))
+		app.insert_resource(ClearColor(Color::hex("#C6DDF0").unwrap()))
 			.add_plugins(DefaultPlugins.set(WindowPlugin {
 				primary_window: Some(Window {
 					mode: WindowMode::BorderlessFullscreen,

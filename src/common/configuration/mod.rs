@@ -2,6 +2,8 @@ use bevy::window::{WindowMode, PresentMode};
 use super::state::GameState;
 use bevy::prelude::*;
 
+mod curser;
+
 pub struct ConfigurationPlugin;
 
 impl Plugin for ConfigurationPlugin {
@@ -16,6 +18,7 @@ impl Plugin for ConfigurationPlugin {
 				}),
 				..default()
 			}))
+			.add_plugins(curser::CursorPlugin)
 			.init_state::<GameState>();
 	}
 }

@@ -77,7 +77,7 @@ impl Plugin for SplashPlugin {
 			.add_systems(OnExit(GameState::Splash), destruct_splash)
 			.add_systems(Update, update_time.run_if(in_state(GameState::Splash)))
 			.insert_resource(SplashTimer {
-				timer: Timer::new(Duration::from_secs(2), TimerMode::Once),
+				timer: Timer::new(Duration::from_millis(500), TimerMode::Once),
 			});
 	}
 }

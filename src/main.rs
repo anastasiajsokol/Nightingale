@@ -1,3 +1,5 @@
-fn main() {
-    println!("Hello, world!");
+mod interface;
+
+pub fn main() -> iced::Result {
+    interface::run()
 }

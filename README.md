@@ -1,0 +1,2 @@
+# Nightingale
+An Email Interface

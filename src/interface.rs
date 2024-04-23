@@ -1,50 +1,31 @@
-use iced::{Alignment, Element, Sandbox, Settings};
-use iced::widget::{button, column, text};
+use iced::{Application, Command, Element, Settings, Theme};
+use iced::executor;
 
 pub fn run() -> iced::Result {
     Interface::run(Settings::default())
 }
 
-struct Interface {
-    value: i32,
-}
+struct Interface;
 
-#[derive(Debug, Clone, Copy)]
-enum Message {
-    IncrementPressed,
-    DecrementPressed,
-}
+impl Application for Interface {
+    type Executor = executor::Default;
+    type Flags = ();
+    type Message = ();
+    type Theme = Theme;
 
-impl Sandbox for Interface {
-    type Message = Message;
-
-    fn new() -> Self {
-        Self { value: 0 }
+    fn new(_flags: ()) -> (Interface, Command<Self::Message>) {
+        (Interface, Command::none())
     }
 
     fn title(&self) -> String {
         String::from("Nightingale")
     }
 
-    fn update(&mut self, message: Message) {
-        match message {
-            Message::IncrementPressed => {
-                self.value += 1;
-            }
-            Message::DecrementPressed => {
-                self.value -= 1;
-            }
-        }
+    fn update(&mut self, _message: Self::Message) -> Command<Self::Message> {
+        Command::none()
     }
 
-    fn view(&self) -> Element<Message> {
-        column![
-            button("+").on_press(Message::IncrementPressed),
-            text(self.value).size(50),
-            button("-").on_press(Message::DecrementPressed)
-        ]
-        .padding(20)
-        .align_items(Alignment::Center)
-        .into()
+    fn view(&self) -> Element<Self::Message> {
+        "Hello, world!".into()
     }
 }

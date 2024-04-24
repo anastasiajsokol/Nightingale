@@ -41,19 +41,23 @@ fn generate_title(state: &State) -> Title<'_> {
 }
 
 fn generate_instructions(state: &State) -> Title<'_> {
-    match state {
-        State::Inbox | State::Sent | State::Drafts => Title::from(Line::from(vec![
+    let mut commands = match state {
+        State::Inbox | State::Sent | State::Drafts => vec![
             " Previous ".into(),
             "<Up>".cyan().bold(),
             " Next ".into(),
             "<Down>".cyan().bold(),
             " Quit ".into(),
             "<Q>".cyan().bold(),
-            " Exit ".into(),
-            "<Esc> ".cyan().bold(),
-        ])),
-        _ => Title::from(Line::from(vec![" Exit ".into(), "<Esc> ".cyan().bold()])),
-    }
+        ],
+        _ => vec![],
+    };
+
+    let mut general = vec![" Exit ".into(), "<Esc> ".cyan().bold()];
+
+    commands.append(&mut general);
+
+    Title::from(Line::from(commands))
 }
 
 fn generate_body(state: &State) -> impl Widget {

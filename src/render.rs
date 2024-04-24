@@ -4,8 +4,8 @@ use ratatui::{
     widgets::{block::*, *},
 };
 
-use crate::state::State;
 use crate::app;
+use crate::state::State;
 
 fn generate_title(state: &State) -> Title<'_> {
     let mut inbox = " Inbox ".white();
@@ -14,11 +14,16 @@ fn generate_title(state: &State) -> Title<'_> {
     let mut compose = " Compose ".white();
 
     match state {
-        State::Compose => { compose = compose.bold(); }
-        State::Drafts => { drafts = drafts.bold(); },
-        State::Inbox => { inbox = inbox.bold(); },
-        State::Sent => { sent = sent.bold() },
-
+        State::Compose => {
+            compose = compose.bold();
+        }
+        State::Drafts => {
+            drafts = drafts.bold();
+        }
+        State::Inbox => {
+            inbox = inbox.bold();
+        }
+        State::Sent => sent = sent.bold(),
     }
 
     Title::from(Line::from(vec![
@@ -47,27 +52,23 @@ fn generate_instructions(state: &State) -> Title<'_> {
             " Exit ".into(),
             "<Esc> ".cyan().bold(),
         ])),
-        _ => Title::from(Line::from(vec![
-                " Exit ".into(),
-                "<Esc> ".cyan().bold(),
-            ]))
+        _ => Title::from(Line::from(vec![" Exit ".into(), "<Esc> ".cyan().bold()])),
     }
 }
 
 fn generate_body(state: &State) -> impl Widget {
-    Paragraph::new(Text::from(vec![Line::from(vec![
-        match state {
-            State::Inbox => "Inbox".into(),
-            State::Sent => "Sent".into(),
-            State::Drafts => "Drafts".into(),
-            State::Compose => "Compose".into(),
-        }
-    ])])).centered()
+    Paragraph::new(Text::from(vec![Line::from(vec![match state {
+        State::Inbox => "Inbox".into(),
+        State::Sent => "Sent".into(),
+        State::Drafts => "Drafts".into(),
+        State::Compose => "Compose".into(),
+    }])]))
+    .centered()
 }
 
 fn generate_shell(state: &State) -> Block<'_> {
     let title = generate_title(&state);
-        let instructions = generate_instructions(&state);
+    let instructions = generate_instructions(&state);
 
     Block::default()
         .title(title.alignment(Alignment::Left))

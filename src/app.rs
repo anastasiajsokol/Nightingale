@@ -1,6 +1,6 @@
-use std::io;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::prelude::*;
+use std::io;
 
 use crate::state::State;
 use crate::tui;
@@ -40,10 +40,18 @@ impl App {
             KeyCode::Esc => self.exit(),
             KeyCode::Char('q') => self.exit(),
 
-            KeyCode::Char('i') => { self.state = State::Inbox; },
-            KeyCode::Char('s') => { self.state = State::Sent; },
-            KeyCode::Char('d') => { self.state = State::Drafts; },
-            KeyCode::Char('c') => { self.state = State::Compose; },
+            KeyCode::Char('i') => {
+                self.state = State::Inbox;
+            }
+            KeyCode::Char('s') => {
+                self.state = State::Sent;
+            }
+            KeyCode::Char('d') => {
+                self.state = State::Drafts;
+            }
+            KeyCode::Char('c') => {
+                self.state = State::Compose;
+            }
 
             _ => {}
         }

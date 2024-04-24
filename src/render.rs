@@ -60,17 +60,7 @@ fn generate_instructions(state: &State) -> Title<'_> {
     Title::from(Line::from(commands))
 }
 
-fn generate_body(state: &State) -> impl Widget {
-    Paragraph::new(Text::from(vec![Line::from(vec![match state {
-        State::Inbox => "Inbox".into(),
-        State::Sent => "Sent".into(),
-        State::Drafts => "Drafts".into(),
-        State::Compose => "Compose".into(),
-    }])]))
-    .centered()
-}
-
-fn generate_shell(state: &State) -> Block<'_> {
+fn render_shell(state: &State, area: Rect, buf: &mut Buffer) {
     let title = generate_title(&state);
     let instructions = generate_instructions(&state);
 
@@ -83,19 +73,35 @@ fn generate_shell(state: &State) -> Block<'_> {
         )
         .borders(Borders::ALL)
         .border_set(border::THICK)
+        .render(area, buf);
+}
+
+fn render_body(app: &app::App, area: Rect, buf: &mut Buffer) {
+    let mut items = vec![];
+
+    for i in 0..20 {
+        items.push(format!("Message {}", i));
+    }
+
+    let list = List::new(items);
+
+    let mut state = ListState::default().with_offset(app.inbox.scroll);
+
+    StatefulWidget::render(list, area, buf, &mut state);
 }
 
 impl Widget for &app::App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        generate_shell(&self.state).render(area, buf);
+        render_shell(&self.state, area, buf);
 
+        let margin = 1;
         let inner = Rect {
-            x: area.x + 1,
-            y: area.y + 1,
-            width: area.width - 2,
-            height: area.height - 2,
+            x: area.x + margin,
+            y: area.y + margin,
+            width: area.width - 2 * margin,
+            height: area.height - 2 * margin,
         };
 
-        generate_body(&self.state).render(inner, buf);
+        render_body(&self, inner, buf);
     }
 }

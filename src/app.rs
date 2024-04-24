@@ -2,11 +2,12 @@ use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::prelude::*;
 use std::io;
 
-use crate::state::State;
+use crate::state::*;
 use crate::tui;
 
 #[derive(Debug, Default)]
 pub struct App {
+    pub inbox: InboxState,
     pub state: State,
     exit: bool,
 }
@@ -40,6 +41,9 @@ impl App {
             KeyCode::Esc => self.exit(),
             KeyCode::Char('q') => self.exit(),
 
+            KeyCode::Down => self.scroll(true),
+            KeyCode::Up => self.scroll(false),
+
             KeyCode::Char('i') => {
                 self.state = State::Inbox;
             }
@@ -54,6 +58,14 @@ impl App {
             }
 
             _ => {}
+        }
+    }
+
+    fn scroll(&mut self, next: bool){
+        if next {
+            self.inbox.scroll += 1;
+        } else if self.inbox.scroll != 0 {
+            self.inbox.scroll -= 1;
         }
     }
 

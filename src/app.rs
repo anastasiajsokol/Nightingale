@@ -54,7 +54,18 @@ impl App {
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let title = Title::from(" Nightingale ".bold());
+        let title = Title::from(Line::from(vec![
+            " Nightingale ".green().bold(),
+            " Inbox ".bold(),
+            "<I>".cyan().bold(),
+            " Sent ".into(),
+            "<S>".cyan().bold(),
+            " Drafts ".into(),
+            "<D>".cyan().bold(),
+            " Compose ".into(),
+            "<C>".cyan().bold(),
+            " ".into(),
+        ]));
         let instructions = Title::from(Line::from(vec![
             " Previous ".into(),
             "<Up>".cyan().bold(),
@@ -66,7 +77,7 @@ impl Widget for &App {
             "<Esc> ".cyan().bold(),
         ]));
         let block = Block::default()
-            .title(title.alignment(Alignment::Center))
+            .title(title.alignment(Alignment::Left))
             .title(
                 instructions
                     .alignment(Alignment::Center)

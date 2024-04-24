@@ -61,7 +61,7 @@ impl App {
         }
     }
 
-    fn scroll(&mut self, next: bool){
+    fn scroll(&mut self, next: bool) {
         if next {
             self.inbox.scroll += 1;
         } else if self.inbox.scroll != 0 {

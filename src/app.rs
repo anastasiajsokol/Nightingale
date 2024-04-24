@@ -1,17 +1,13 @@
 use std::io;
-
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
+use ratatui::prelude::*;
 
-use ratatui::{
-    prelude::*,
-    symbols::border,
-    widgets::{block::*, *},
-};
-
+use crate::state::State;
 use crate::tui;
 
 #[derive(Debug, Default)]
 pub struct App {
+    pub state: State,
     exit: bool,
 }
 
@@ -43,56 +39,17 @@ impl App {
         match key_event.code {
             KeyCode::Esc => self.exit(),
             KeyCode::Char('q') => self.exit(),
+
+            KeyCode::Char('i') => { self.state = State::Inbox; },
+            KeyCode::Char('s') => { self.state = State::Sent; },
+            KeyCode::Char('d') => { self.state = State::Drafts; },
+            KeyCode::Char('c') => { self.state = State::Compose; },
+
             _ => {}
         }
     }
 
     fn exit(&mut self) {
         self.exit = true;
-    }
-}
-
-impl Widget for &App {
-    fn render(self, area: Rect, buf: &mut Buffer) {
-        let title = Title::from(Line::from(vec![
-            " Nightingale ".green().bold(),
-            " Inbox ".bold(),
-            "<I>".cyan().bold(),
-            " Sent ".into(),
-            "<S>".cyan().bold(),
-            " Drafts ".into(),
-            "<D>".cyan().bold(),
-            " Compose ".into(),
-            "<C>".cyan().bold(),
-            " ".into(),
-        ]));
-        let instructions = Title::from(Line::from(vec![
-            " Previous ".into(),
-            "<Up>".cyan().bold(),
-            " Next ".into(),
-            "<Down>".cyan().bold(),
-            " Quit ".into(),
-            "<Q>".cyan().bold(),
-            " Exit ".into(),
-            "<Esc> ".cyan().bold(),
-        ]));
-        let block = Block::default()
-            .title(title.alignment(Alignment::Left))
-            .title(
-                instructions
-                    .alignment(Alignment::Center)
-                    .position(Position::Bottom),
-            )
-            .borders(Borders::ALL)
-            .border_set(border::THICK);
-
-        let body = Text::from(vec![Line::from(vec![
-            "Inbox [or at least what will be the inbox eventually, maybe]".into(),
-        ])]);
-
-        Paragraph::new(body)
-            .centered()
-            .block(block)
-            .render(area, buf);
     }
 }
